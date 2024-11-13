@@ -140,7 +140,9 @@ espandautocollectfruitsconfig:Callback(function ()
     unload = false
   else
     unload = true
+      wait(1)
     toggleitems:Set(false)
+      wait(0.5)
     fruitesp:Set(false)
     espandautocollectfruitsconfig:Set("Load")
   end
