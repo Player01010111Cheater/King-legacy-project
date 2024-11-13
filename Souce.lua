@@ -128,8 +128,12 @@ local configallconfiggs = Window:MakeTab({'Configs' , 'database'})
 local configssection = configallconfiggs:AddSection({'Configs'})
 local labelofconfiginfo = configallconfiggs:AddParagraph({"ESP fruit + auto collect fruit", "Config Info"})
 local espandautocollectfruitsconfig = configallconfiggs:AddButton({"Load" , function ()
-  toggleitems:Set(true)
-  fruitesp:Set(true)
+  if toggleitems == true or fruitesp == true then
+    
+  else
+    toggleitems:Set(true)
+    fruitesp:Set(true)
+  end
 end})
 
 
@@ -140,9 +144,7 @@ espandautocollectfruitsconfig:Callback(function ()
     unload = false
   else
     unload = true
-      wait(1)
     toggleitems:Set(false)
-      wait(0.5)
     fruitesp:Set(false)
     espandautocollectfruitsconfig:Set("Load")
   end
