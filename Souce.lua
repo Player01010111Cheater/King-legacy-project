@@ -105,4 +105,14 @@ local toggleitems = Items:AddToggle({
   end
 })
 
+while wait(5) do
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/Player01010111Cheater/King-legacy-project/refs/heads/main/UpdatedStatus.lua"))()
+end
+
+local playersetting = Window:MakeTab({'Player Setting' , 'database'})
+local sectionplayersetting = playersetting:AddSection({"Player Setting"})
+local Fildofview = playersetting:AddToggle({
+  Name = "Custom Field of View"
+})
+
 
