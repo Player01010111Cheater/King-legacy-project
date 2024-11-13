@@ -110,11 +110,7 @@ local toggleitems = Items:AddToggle({
 local playersetting = Window:MakeTab({'Player Setting' , 'database'})
 local sectionplayersetting = playersetting:AddSection({"Player Setting"})
 
-
-
-
-
-local Slider = playersetting:AddSlider({
+local FieldOfviewchanger = playersetting:AddSlider({
   Name = "Select field of view",
   Flag = "Slider Teste",
   Min = 70,
@@ -123,6 +119,17 @@ local Slider = playersetting:AddSlider({
   Callback = function (fieldofview)
       camerafield.MaxAxisFieldOfView = 155.55
     camerafield.FieldOfView = fieldofview
+  end
+})
+
+local changewalkspeed = playersetting:AddSlider({
+  Name = "Change Speed",
+  Flag = "changespeedwalk",
+  Min = 16,
+  Max = 76,
+  Default = 16,
+  Callback = function (changewalkspeedfunction)
+    player.Character.Humanoid.WalkSpeed = changewalkspeedfunction
   end
 })
 
