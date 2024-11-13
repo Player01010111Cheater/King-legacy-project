@@ -1,4 +1,4 @@
-if workspace:FindFirstChild("UpdatedStatus") then
+if workspace:FindFirstChild("UpdateStatus") then
 workspace.UpdateStatus:Destroy()
   else
   local Updated = Instance.new("BoolValue")
