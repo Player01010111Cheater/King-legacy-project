@@ -9,7 +9,7 @@ local esp = Window:MakeTab({'ESP' , 'database'})
 local loadbasesection = esp:AddSection({"ESP"})
 local alldroppedfruitsfolder = workspace.AllDroppedFruit
 local player = game.Players.LocalPlayer
-local camerafield = workspace.CurrentCamera.FieldOfView
+local camerafield = workspace.CurrentCamera
 local name =  "PassiveTree"
 local allnpc = workspace.AllNPC
 local folderplayerinworkspace = workspace.PlayerCharacters
@@ -118,10 +118,11 @@ local Slider = playersetting:AddSlider({
   Name = "Select field of view",
   Flag = "Slider Teste",
   Min = 70,
-  Max = 180,
+  Max = 120,
   Default = 16,
   Callback = function (fieldofview)
-    camerafield = fieldofview
+      camerafield.MaxAxisFieldOfView = 155.55
+    camerafield.FieldOfView = fieldofview
   end
 })
 
