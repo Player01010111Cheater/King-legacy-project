@@ -123,25 +123,26 @@ local FieldOfviewchanger = playersetting:AddSlider({
 })
 
 
-local unload = true
-local configallconfiggs = Window:MakeTab({'Configs' , 'database'})
-local configssection = configallconfiggs:AddSection({'Configs'})
-local labelofconfiginfo = configallconfiggs:AddParagraph({"ESP fruit + auto collect fruit", "Config Info"})
-local espandautocollectfruitsconfig = configallconfiggs:AddButton({"Load" , function ()
-end})
-espandautocollectfruitsconfig:Callback(function ()
-  if unload == false then
-    unload = true
-    toggleitems:Set(false)
-    fruitesp:Set(false)
-    espandautocollectfruitsconfig:Set("Load")
-  else
-    espandautocollectfruitsconfig:Set("Unload")
-    unload = false
-    toggleitems:Set(true)
-    fruitesp:Set(true)
+local valuebuykey = 1
+local Buyoropen = Window:MakeTab({'Buy /Open' , 'database'})
+local buyopensection = Buyoropen:AddSection({"Buy/Open"})
+local buyopenslider = Buyoropen:AddSlider({
+  Name = "Select how much copper key buy ",
+  Flag "Openbuyvalue",
+  Description = "Price : 25k",
+  Min = 1,
+  Max = 9,
+  Default = 1,
+  Callback = function (howmuchbuyvalue)
+    valuebuykey = howmuchbuyvalue
   end
-end)
+})
+local buyvaluemuch = Buyoropen:AddButton({"Buy" , function ()
+  for i = 0,valuebuykey do
+    wait(0.1)
+    game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer("Copper Key")
+  end
+end})
 
 
 
