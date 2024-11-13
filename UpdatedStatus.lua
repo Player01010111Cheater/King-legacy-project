@@ -4,5 +4,5 @@ workspace.UpdatedStatus:Destroy()
   local Updated = Instance.new("BoolValue")
   Updated.Name = "UpdateStatus"
   Updated.Parent = workspace
-  Updated.Value = false
+  Updated.Value = true
 end
