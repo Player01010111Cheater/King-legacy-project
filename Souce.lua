@@ -9,6 +9,7 @@ local esp = Window:MakeTab({'ESP' , 'database'})
 local loadbasesection = esp:AddSection({"ESP"})
 local alldroppedfruitsfolder = workspace.AllDroppedFruit
 local player = game.Players.LocalPlayer
+local camerafield = workspace.CurrentCamera.FieldOfView
 local name =  "PassiveTree"
 local allnpc = workspace.AllNPC
 local folderplayerinworkspace = workspace.PlayerCharacters
@@ -111,5 +112,18 @@ local sectionplayersetting = playersetting:AddSection({"Player Setting"})
 local Fildofview = playersetting:AddToggle({
   Name = "Custom Field of View"
 })
+
+
+
+
+
+local Slider = playersetting:AddSlider({
+  Name = "Select walk speed",
+  Flag = "Slider Teste",
+  Min = 70,
+  Max = 180,
+  Default = 16,
+})
+
 
 
