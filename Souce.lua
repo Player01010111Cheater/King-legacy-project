@@ -127,9 +127,8 @@ local valuebuykey = 1
 local Buyoropen = Window:MakeTab({'Buy /Open' , 'database'})
 local buyopensection = Buyoropen:AddSection({"Buy/Open"})
 local buyopenslider = Buyoropen:AddSlider({
-  Name = "Select how much copper key buy ",
+  Name = "Select how much copper key buy price:25k ",
   Flag "Openbuyvalue",
-  Description = "Price : 25k",
   Min = 1,
   Max = 9,
   Default = 1,
