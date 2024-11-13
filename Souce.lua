@@ -5,7 +5,7 @@ Window:AddMinimizeButton({
   Button = { Image = redzlib:GetIcon("Apple"), BackgroundTransparency = 0 },
   Corner = { CornerRadius = UDim.new(0, 6) }
 })
-local esp = Window:MakeTab({'ESP' , 'database'})
+local esp = Window:MakeTab({'ESP' , 'Home'})
 local loadbasesection = esp:AddSection({"ESP"})
 local alldroppedfruitsfolder = workspace.AllDroppedFruit
 local player = game.Players.LocalPlayer
@@ -85,7 +85,7 @@ local toggleitems = Items:AddToggle({
   Callback = function (toggleitemsget)
     if toggleitemsget == true then
       stop2 = true
-    while wait(0.5) do
+    while wait(0.2) do
       if stop2 == true then
         for _, t in pairs(alldroppedfruitsfolder:GetDescendants()) do
           if t.Name == "Handle" then
@@ -122,16 +122,15 @@ local FieldOfviewchanger = playersetting:AddSlider({
   end
 })
 
-local changewalkspeed = playersetting:AddSlider({
-  Name = "Change Speed",
-  Flag = "changespeedwalk",
-  Min = 16,
-  Max = 76,
-  Default = 16,
-  Callback = function (changewalkspeedfunction)
-    player.Character.Humanoid.WalkSpeed = changewalkspeedfunction
-  end
-})
+
+
+local configallconfiggs = Window:MakeTab({'Configs' , 'database'})
+local configssection = configallconfiggs:AddSection({'Configs'})
+local labelofconfiginfo = configallconfiggs:AddParagraph({"ESP fruit + auto collect fruit", "Config Info"})
+local espandautocollectfruitsconfig = configallconfiggs:AddButton({"Load" , function ()
+  toggleitems:Set(true)
+  fruitesp:Set(true)
+end})
 
 
 
