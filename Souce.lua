@@ -123,27 +123,27 @@ local FieldOfviewchanger = playersetting:AddSlider({
 })
 
 
-
+local unload = nil
 local configallconfiggs = Window:MakeTab({'Configs' , 'database'})
 local configssection = configallconfiggs:AddSection({'Configs'})
 local labelofconfiginfo = configallconfiggs:AddParagraph({"ESP fruit + auto collect fruit", "Config Info"})
 local espandautocollectfruitsconfig = configallconfiggs:AddButton({"Load" , function ()
   toggleitems:Set(true)
   fruitesp:Set(true)
-  
+  unload = true
 end})
 
 
 
-
-
-
-
-
-
-
 espandautocollectfruitsconfig:Callback(function ()
-  espandautocollectfruitsconfig:Set("Unload")
+  if unload == true then
+    espandautocollectfruitsconfig:Set("Unload")
+    unload = false
+  else
+    toggleitems:Set(false)
+    fruitesp:Set(false)
+    espandautocollectfruitsconfig:Set("Load")
+  end
 end)
 
 
