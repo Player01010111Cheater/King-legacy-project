@@ -109,20 +109,20 @@ local toggleitems = Items:AddToggle({
 
 local playersetting = Window:MakeTab({'Player Setting' , 'database'})
 local sectionplayersetting = playersetting:AddSection({"Player Setting"})
-local Fildofview = playersetting:AddToggle({
-  Name = "Custom Field of View"
-})
 
 
 
 
 
 local Slider = playersetting:AddSlider({
-  Name = "Select walk speed",
+  Name = "Select field of view",
   Flag = "Slider Teste",
   Min = 70,
   Max = 180,
   Default = 16,
+  Callback = function (fieldofview)
+    camerafield = fieldofview
+  end
 })
 
 
