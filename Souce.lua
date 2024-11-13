@@ -130,7 +130,22 @@ local labelofconfiginfo = configallconfiggs:AddParagraph({"ESP fruit + auto coll
 local espandautocollectfruitsconfig = configallconfiggs:AddButton({"Load" , function ()
   toggleitems:Set(true)
   fruitesp:Set(true)
+  
 end})
+
+
+
+
+
+
+
+
+
+
+espandautocollectfruitsconfig:Callback(function ()
+  espandautocollectfruitsconfig:Set("Unload")
+end)
+
 
 
 
