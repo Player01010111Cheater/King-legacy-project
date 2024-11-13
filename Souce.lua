@@ -127,8 +127,9 @@ local valuebuykey = 1
 local Buyoropen = Window:MakeTab({'Buy /Open' , 'database'})
 local buyopensection = Buyoropen:AddSection({"Buy/Open"})
 local buyopenslider = Buyoropen:AddSlider({
-  Name = "Select how much copper key buy price:25k ",
-  Flag "Openbuyvalue",
+  Name = "Select how much copper key buy ",
+  Flag = "Lllld",
+  Description = "Price : 25k",
   Min = 1,
   Max = 9,
   Default = 1,
@@ -142,8 +143,3 @@ local buyvaluemuch = Buyoropen:AddButton({"Buy" , function ()
     game:GetService("ReplicatedStorage").Chest.Remotes.Functions.BuyKey:InvokeServer("Copper Key")
   end
 end})
-
-
-
-
-
