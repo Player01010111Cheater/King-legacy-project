@@ -216,9 +216,7 @@ end})
 local checkkey = misc:AddButton({"Get private version" , function ()
   for _, v in pairs(game.Players:GetDescendants()) do
     if v.Name == "stas1231942" then
-
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Player01010111Cheater/Private2.0/refs/heads/main/Privatesrc.lua"))()
-    
     end
   end
 end})
