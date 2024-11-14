@@ -1,6 +1,6 @@
 local redzlib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Player01010111Cheater/Sigmna/refs/heads/main/Souce.lua"))()
 local l = loadstring(game:HttpGet("https://raw.githubusercontent.com/laagginq/ui-libraries/main/dxhooknotify/src.lua", true))()
-local Window = redzlib:MakeWindow({"King Legacy", "", ""})
+local Window = redzlib:MakeWindow({"It's time to win Free version", "", ""})
 Window:AddMinimizeButton({
   Button = { Image = redzlib:GetIcon("Apple"), BackgroundTransparency = 0 },
   Corner = { CornerRadius = UDim.new(0, 6) }
@@ -123,7 +123,7 @@ local FieldOfviewchanger = playersetting:AddSlider({
 })
 
 
-local valuebuykey = 1
+local valuebuykey = nil
 local Buyoropen = Window:MakeTab({'Buy /Open' , 'database'})
 local buyopensection = Buyoropen:AddSection({"Buy/Open"})
 local buyopenslider = Buyoropen:AddSlider({
@@ -131,8 +131,8 @@ local buyopenslider = Buyoropen:AddSlider({
   Flag = "Lllld",
   Description = "Price : 25k",
   Min = 1,
-  Max = 9,
-  Default = 1,
+  Max = 10,
+  Default = 0,
   Callback = function (howmuchbuyvalue)
     valuebuykey = howmuchbuyvalue
   end
@@ -213,3 +213,22 @@ local reedemallcodes = misc:AddButton({'Redeem all new codes' , function ()
   wait(0.1)
   game:GetService("ReplicatedStorage").Chest.Remotes.Functions.redeemcode:InvokeServer("Update4.7")
 end})
+
+local texbox = misc:AddTextBox({
+  Name = "Enter key for more functions",
+  Description = "Opem  more funtions",
+  PlaceholderText = "Type here",
+  Callback = function (enteredkey)
+    if enteredkey == "-H2hIld9a132kda92laa-" then
+      
+    end
+  end
+})
+local Autoraid = Window:MakeTab({'Auto Raid' , 'Sword'})
+local sectionautoraid = Autoraid:AddSection("Auto Raid")
+local addtotelegram = Autoraid:AddDiscordInvite({
+  Name = "you cant do it in free version",
+  Description = "Get key in my telegram bot",
+  Logo = "rbxassetid://77647946260910",
+  Invite = "@Getkeyregister_bot"
+})
