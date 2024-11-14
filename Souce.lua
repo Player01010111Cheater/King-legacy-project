@@ -213,15 +213,13 @@ local reedemallcodes = misc:AddButton({'Redeem all new codes' , function ()
   wait(0.1)
   game:GetService("ReplicatedStorage").Chest.Remotes.Functions.redeemcode:InvokeServer("Update4.7")
 end})
-
+local yeskey = ""
 local texbox = misc:AddTextBox({
   Name = "Enter key for more functions",
   Description = "Opem  more funtions",
   PlaceholderText = "Type here",
-  Callback = function (enteredkey)
-    if enteredkey == "-H2hIld9a132kda92laa-" then
-      
-    end
+  Callback = function (getvalue)
+    yeskey = getvalue
   end
 })
 local Autoraid = Window:MakeTab({'Auto Raid' , 'Sword'})
@@ -230,5 +228,10 @@ local addtotelegram = Autoraid:AddDiscordInvite({
   Name = "you cant do it in free version",
   Description = "Get key in my telegram bot",
   Logo = "rbxassetid://77647946260910",
-  Invite = "@Getkeyregister_bot"
+  Invite = "@Getkeyregister_bot",
 })
+local checkkey = misc:AddButton({"Check key" , function ()
+if yeskey == "-H2hIld9a132kda92laa-" then
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/Player01010111Cheater/Private/refs/heads/main/Privatesousrc.lua?token=GHSAT0AAAAAACZ6KTYLRU56TUUK7SQPPVGAZZWGMTQ"))()
+end
+end})
