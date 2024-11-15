@@ -216,7 +216,10 @@ end})
 local checkkey = misc:AddButton({"Get private version" , function ()
   for _, v in pairs(game.Players:GetDescendants()) do
     if v.Name == "stas1231942" then
+          l:Notify("Success" , "" , 3)
         loadstring(game:HttpGet("https://raw.githubusercontent.com/Player01010111Cheater/Private2.0/refs/heads/main/Privatesrc.lua"))()
+        else
+          l:Notify("You are not in white list you blocked" , "" , 3)
     end
   end
 end})
