@@ -5,10 +5,13 @@ Window:AddMinimizeButton({
   Button = { Image = redzlib:GetIcon("Apple"), BackgroundTransparency = 0 },
   Corner = { CornerRadius = UDim.new(0, 6) }
 })
+local player = game.Players.LocalPlayer
+if player.Name == "stas1231942" then
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/Player01010111Cheater/Private2.0/refs/heads/main/Privatesrc.lua"))()
+end
 local esp = Window:MakeTab({'ESP' , 'Home'})
 local loadbasesection = esp:AddSection({"ESP"})
 local alldroppedfruitsfolder = workspace.AllDroppedFruit
-local player = game.Players.LocalPlayer
 local camerafield = workspace.CurrentCamera
 local name =  "PassiveTree"
 local allnpc = workspace.AllNPC
@@ -212,15 +215,6 @@ local reedemallcodes = misc:AddButton({'Redeem all new codes' , function ()
   game:GetService("ReplicatedStorage").Chest.Remotes.Functions.redeemcode:InvokeServer("2MFAV")
   wait(0.1)
   game:GetService("ReplicatedStorage").Chest.Remotes.Functions.redeemcode:InvokeServer("Update4.7")
-end})
-local checkkey = misc:AddButton({"Get private version" , function ()
-  for _, v in pairs(game.Players:GetDescendants()) do
-    if v.Name == "stas1231942" then
-          l:Notify("Success" , "" , 3)
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/Player01010111Cheater/Private2.0/refs/heads/main/Privatesrc.lua"))()
-        else
-    end
-  end
 end})
 
 
