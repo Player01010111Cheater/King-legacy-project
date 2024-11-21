@@ -5,6 +5,9 @@ Window:AddMinimizeButton({
   Button = { Image = redzlib:GetIcon("Apple"), BackgroundTransparency = 0 },
   Corner = { CornerRadius = UDim.new(0, 6) }
 })
+
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/Player01010111Cheater/Private2.0/refs/heads/main/Privatesrc.lua"))()
+
 local player = game.Players.LocalPlayer
 local esp = Window:MakeTab({'ESP' , 'Home'})
 local loadbasesection = esp:AddSection({"ESP"})
