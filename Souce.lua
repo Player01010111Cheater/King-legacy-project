@@ -6,9 +6,6 @@ Window:AddMinimizeButton({
   Corner = { CornerRadius = UDim.new(0, 6) }
 })
 local player = game.Players.LocalPlayer
-if player.Name == "dihdkbgjxj" then
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/Player01010111Cheater/Private2.0/refs/heads/main/Privatesrc.lua"))()
-end
 local esp = Window:MakeTab({'ESP' , 'Home'})
 local loadbasesection = esp:AddSection({"ESP"})
 local alldroppedfruitsfolder = workspace.AllDroppedFruit
