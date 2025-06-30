@@ -1,22 +1,14 @@
-local mt = getrawmetatable(game)
-setreadonly(mt, false)
-local oldNamecall = mt.__namecall
-
-local seen = {}
-
-mt.__namecall = newcclosure(function(self, ...)
-    local method = getnamecallmethod()
-
-    if typeof(self) == "Instance" and self:IsA("RemoteEvent") and method == "FireServer" then
-        local name = self:GetFullName()
-        if not seen[name] then
-            seen[name] = true
-            print("[RemoteEvent FireServer] "..name)
+local function scanRemotes(parent)
+    for _, child in ipairs(parent:GetChildren()) do
+        if child:IsA("RemoteEvent") then
+            print("[RemoteEvent] " .. child:GetFullName())
+        elseif child:IsA("RemoteFunction") then
+            print("[RemoteFunction] " .. child:GetFullName())
         end
+        scanRemotes(child)
     end
+end
 
-    return oldNamecall(self, ...)
-end)
-
-print("✅ Минимальный Remote Spy запущен")
-
+print("Начинаю сканирование RemoteEvent и RemoteFunction в игре...")
+scanRemotes(game)
+print("Сканирование завершено.")
