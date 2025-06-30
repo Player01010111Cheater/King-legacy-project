@@ -1,31 +1,27 @@
--- ✅ Проверка безопасности
-if not getrawmetatable or not setreadonly or not newcclosure or not getnamecallmethod then
-    warn("❌ Твой executor не поддерживает нужные функции.")
-    return
-end
+-- 🔧 Минимальный логгер FireServer, оптимизированный под мобильные устройства
 
--- 🔓 Получаем доступ к метатаблице
+local logged = {} -- чтобы не логировать один и тот же Remote 100 раз
+
 local mt = getrawmetatable(game)
 setreadonly(mt, false)
 
--- 💾 Сохраняем оригинальный метод
-local oldNamecall = mt.__namecall
+local old = mt.__namecall
 
--- 🔁 Подмена __namecall для логов
 mt.__namecall = newcclosure(function(self, ...)
     local method = getnamecallmethod()
 
     if method == "FireServer" and typeof(self) == "Instance" and self:IsA("RemoteEvent") then
-        warn("📦 FireServer на:", self:GetFullName())
-        
-        -- Аргументы
-        local args = {...}
-        for i, v in ipairs(args) do
-            warn("   ➜ Аргумент ["..i.."]: ", v)
+        local name = self:GetFullName()
+        if not logged[name] then
+            logged[name] = true
+            print("📦 FireServer →", name)
+            -- Если хочешь видеть аргументы (но осторожно с лагами):
+            -- for i, v in ipairs({...}) do print("   ➜ Arg", i, v) end
         end
     end
 
-    return oldNamecall(self, ...)
+    return old(self, ...)
 end)
 
-warn("✅ Скрипт ловли FireServer успешно загружен!")
+print("✅ Оптимизированный FireServer-логгер активен.")
+
