@@ -1,5 +1,4 @@
--- Надёжный Remote Spy (альтернатива Turtle Spy)
--- Ловит FireServer, InvokeServer, Fire, Invoke
+local loggedEvents = {}
 
 local function formatArgs(args)
     local output = {}
@@ -18,35 +17,31 @@ local function formatArgs(args)
     return table.concat(output, ", ")
 end
 
--- Хук __namecall (ловит :FireServer(), :InvokeServer(), и т.п.)
 local mt = getrawmetatable(game)
 setreadonly(mt, false)
 local old = mt.__namecall
+
+local debounce = {}
+local DEBOUNCE_TIME = 1 -- секунда между выводом одинаковых вызовов
 
 mt.__namecall = newcclosure(function(self, ...)
     local method = getnamecallmethod()
     local args = {...}
 
-    if typeof(self) == "Instance" and self:IsA("RemoteEvent") or self:IsA("RemoteFunction") then
-        if method == "FireServer" or method == "InvokeServer" then
-            warn("[Remote Call] " .. self:GetFullName() .. ":" .. method .. "(" .. formatArgs(args) .. ")")
+    if typeof(self) == "Instance" and self:IsA("RemoteEvent") and method == "FireServer" then
+        local key = self:GetFullName() .. method .. formatArgs(args)
+        local now = tick()
+        if not debounce[key] or now - debounce[key] > DEBOUNCE_TIME then
+            debounce[key] = now
+            local log = "[Remote Call] " .. self:GetFullName() .. ":" .. method .. "(" .. formatArgs(args) .. ")"
+            table.insert(loggedEvents, log)
+            print(log)
         end
     end
 
     return old(self, ...)
 end)
 
--- Также перехват прямых вызовов (например, Remote:Fire() или Remote:Invoke())
-for _, methodName in ipairs({"Fire", "Invoke"}) do
-    local original = Instance.new("BindableEvent")[methodName]
-    hookfunction(original, newcclosure(function(self, ...)
-        local args = {...}
-        if typeof(self) == "Instance" and (self:IsA("BindableEvent") or self:IsA("BindableFunction")) then
-            warn("[Bindable Call] " .. self:GetFullName() .. ":" .. methodName .. "(" .. formatArgs(args) .. ")")
-        end
-        return original(self, ...)
-    end))
-end
+print("✅ Облегчённый Remote Spy запущен! Логи будут выводиться и сохраняться.")
 
-warn("✅ Remote Spy запущен!")
 
