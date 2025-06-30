@@ -15,6 +15,7 @@ mt.__namecall = newcclosure(function(self, ...)
         if not logged[name] then
             logged[name] = true
             print("📦 FireServer →", name)
+            wait(10)
             -- Если хочешь видеть аргументы (но осторожно с лагами):
             -- for i, v in ipairs({...}) do print("   ➜ Arg", i, v) end
         end
