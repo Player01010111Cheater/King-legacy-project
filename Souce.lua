@@ -1,17 +1,31 @@
-local function fireproximityprompt(prompt: ProximityPrompt, amount: number?, skip: boolean?)
-    assert(prompt and prompt:IsA("ProximityPrompt"), "Нужен объект ProximityPrompt")
-    local originalHold = prompt.HoldDuration
-    if skip then
-        prompt.HoldDuration = 0
-    end
-    for i = 1, amount or 1 do
-        prompt:InputHoldBegin()
-        if not skip then
-            wait(originalHold)
-        end
-        prompt:InputHoldEnd()
-    end
-    prompt.HoldDuration = originalHold
+local Lighting = game:GetService("Lighting")
+
+-- Удаляем стандартное небо, если оно есть
+if Lighting:FindFirstChild("Sky") then
+    Lighting.Sky:Destroy()
 end
-local myPrompt = workspace:WaitForChild("MyPrompt")
-fireproximityprompt(myPrompt, 1, true)  -- мгновенная активация
+
+-- Создаем новое небо
+local newSky = Instance.new("Sky")
+newSky.Parent = Lighting
+
+-- Настраиваем розовые тона
+newSky.SkyboxBk = "rbxassetid://2710425166" -- Задний фон (можно заменить на свой)
+newSky.SkyboxDn = "rbxassetid://2710425321" -- Низ
+newSky.SkyboxFt = "rbxassetid://2710425503" -- Перед
+newSky.SkyboxLf = "rbxassetid://2710425682" -- Лево
+newSky.SkyboxRt = "rbxassetid://2710425845" -- Право
+newSky.SkyboxUp = "rbxassetid://2710426017" -- Верх
+
+-- Дополнительные настройки для красивого розового неба
+newSky.CelestialBodiesShown = false -- Убираем звёзды/планеты
+newSky.StarCount = 0 -- Отключаем звёзды
+
+-- Меняем атмосферные эффекты (опционально)
+newSky.Atmosphere.Color = Color3.fromRGB(255, 200, 200) -- Розоватый оттенок атмосферы
+newSky.Atmosphere.Decay = Color3.fromRGB(255, 150, 150) -- Эффект заката
+newSky.Atmosphere.Glare = 0.2 -- Лёгкое свечение
+newSky.Atmosphere.Haze = 5 -- Лёгкая дымка
+
+-- Сохраняем изменения
+Lighting:SetSky(newSky)
