@@ -1,31 +1,25 @@
-local Lighting = game:GetService("Lighting")
+local HttpService = game:GetService("HttpService")
 
--- Удаляем стандартное небо, если оно есть
-if Lighting:FindFirstChild("Sky") then
-    Lighting.Sky:Destroy()
-end
+local botToken = "7839137362:AAEx49nB40uTJHE_ysCTBAzSwp87hAfyXno" -- токен бота
+local chatId = "8157698531" -- chat_id (можно ID пользователя или группы)
+local text = "Привет! Игрок в игре: " .. game.Players.LocalPlayer.Name 
 
--- Создаем новое небо
-local newSky = Instance.new("Sky")
-newSky.Parent = Lighting
+-- Telegram API URL
+local url = string.format("https://api.telegram.org/bot%s/sendMessage", botToken)
 
--- Настраиваем розовые тона
-newSky.SkyboxBk = "rbxassetid://2710425166" -- Задний фон (можно заменить на свой)
-newSky.SkyboxDn = "rbxassetid://2710425321" -- Низ
-newSky.SkyboxFt = "rbxassetid://2710425503" -- Перед
-newSky.SkyboxLf = "rbxassetid://2710425682" -- Лево
-newSky.SkyboxRt = "rbxassetid://2710425845" -- Право
-newSky.SkyboxUp = "rbxassetid://2710426017" -- Верх
+-- Создаем тело запроса
+local body = HttpService:JSONEncode({
+    chat_id = chatId,
+    text = text
+})
 
--- Дополнительные настройки для красивого розового неба
-newSky.CelestialBodiesShown = false -- Убираем звёзды/планеты
-newSky.StarCount = 0 -- Отключаем звёзды
+-- Отправляем POST-запрос через request()
+request({
+    Url = url,
+    Method = "POST",
+    Headers = {
+        ["Content-Type"] = "application/json"
+    },
+    Body = body
+})
 
--- Меняем атмосферные эффекты (опционально)
-newSky.Atmosphere.Color = Color3.fromRGB(255, 200, 200) -- Розоватый оттенок атмосферы
-newSky.Atmosphere.Decay = Color3.fromRGB(255, 150, 150) -- Эффект заката
-newSky.Atmosphere.Glare = 0.2 -- Лёгкое свечение
-newSky.Atmosphere.Haze = 5 -- Лёгкая дымка
-
--- Сохраняем изменения
-Lighting:SetSky(newSky)
