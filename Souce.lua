@@ -6,13 +6,12 @@ local function showESPNotification(enabled, duration, customText, bgColor)
     local player = game.Players.LocalPlayer
     local screenGuiName = "ESPNotification"
 
-    -- Удалить старое
+    -- Удаляем старое уведомление
     local existing = player:WaitForChild("PlayerGui"):FindFirstChild(screenGuiName)
     if existing then
         existing:Destroy()
     end
 
-    -- Размеры экрана
     local screenSize = workspace.CurrentCamera.ViewportSize
     local isMobile = screenSize.X < 700
 
@@ -32,12 +31,12 @@ local function showESPNotification(enabled, duration, customText, bgColor)
     frame.Size = UDim2.new(0, notifWidth, 0, notifHeight)
     frame.Position = UDim2.new(1, notifOffset, 0.05, 0)
     frame.BackgroundColor3 = bgColor or Color3.fromRGB(30, 30, 30)
-    frame.BackgroundTransparency = 0
+    frame.BackgroundTransparency = 0.3 -- чуть прозрачный
     frame.BorderSizePixel = 0
     frame.AnchorPoint = Vector2.new(0, 0)
     frame.Parent = screenGui
 
-    -- Скругление
+    -- Скругление краёв
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, 8)
     corner.Parent = frame
@@ -53,24 +52,26 @@ local function showESPNotification(enabled, duration, customText, bgColor)
     local progressBar = Instance.new("Frame")
     progressBar.Size = UDim2.new(1, 0, 1, 0)
     progressBar.Position = UDim2.new(0, 0, 0, 0)
-    progressBar.BackgroundColor3 = Color3.fromRGB(0, 255, 127) -- ярко-зелёный
+    progressBar.BackgroundColor3 = Color3.fromRGB(0, 140, 128) -- морской цвет
     progressBar.BorderSizePixel = 0
     progressBar.Parent = progressBarBG
 
-    -- Скругление прогресс-бара
     local progressCorner = Instance.new("UICorner")
     progressCorner.CornerRadius = UDim.new(0, 2)
     progressCorner.Parent = progressBar
 
-    -- Иконка
-    local icon = Instance.new("ImageLabel")
-    icon.Size = UDim2.new(0, 24, 0, 24)
-    icon.Position = UDim2.new(0, 10, 0.5, -12)
-    icon.BackgroundTransparency = 1
-    icon.Image = enabled and "rbxassetid://6031094678" or "rbxassetid://6031097225"
-    icon.Parent = frame
+    -- Эмоджи крестик (если false)
+    local emojiIcon = Instance.new("TextLabel")
+    emojiIcon.Size = UDim2.new(0, 24, 0, 24)
+    emojiIcon.Position = UDim2.new(0, 10, 0.5, -12)
+    emojiIcon.BackgroundTransparency = 1
+    emojiIcon.Text = enabled and "" or "❌"
+    emojiIcon.TextColor3 = Color3.fromRGB(255, 255, 255)
+    emojiIcon.TextScaled = true
+    emojiIcon.Font = Enum.Font.GothamBold
+    emojiIcon.Parent = frame
 
-    -- Текст
+    -- Текст уведомления (справа от эмоджи)
     local label = Instance.new("TextLabel")
     label.Size = UDim2.new(1, -44, 1, 0)
     label.Position = UDim2.new(0, 40, 0, 0)
@@ -91,7 +92,7 @@ local function showESPNotification(enabled, duration, customText, bgColor)
     )
     progressTween:Play()
 
-    -- Анимация удаления в бок
+    -- Уезд уведомления вправо и удаление
     task.delay(duration, function()
         if frame and frame.Parent then
             local tweenInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
