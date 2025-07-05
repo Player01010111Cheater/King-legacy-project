@@ -72,4 +72,4 @@ local function showESPNotification(enabled, duration, customText, bgColor)
 end
 
 
-showESPNotification(true, 3, "Test", 0, 128, 128)
+showESPNotification(true, 3, "Test", Color3.fromRGB(0, 128, 128))
