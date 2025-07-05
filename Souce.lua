@@ -31,12 +31,12 @@ local function showESPNotification(enabled, duration, customText, bgColor)
     frame.Size = UDim2.new(0, notifWidth, 0, notifHeight)
     frame.Position = UDim2.new(1, notifOffset, 0.05, 0)
     frame.BackgroundColor3 = bgColor or Color3.fromRGB(30, 30, 30)
-    frame.BackgroundTransparency = 0.3 -- чуть прозрачный
+    frame.BackgroundTransparency = 0.3
     frame.BorderSizePixel = 0
     frame.AnchorPoint = Vector2.new(0, 0)
     frame.Parent = screenGui
 
-    -- Скругление краёв
+    -- Скругление
     local corner = Instance.new("UICorner")
     corner.CornerRadius = UDim.new(0, 8)
     corner.Parent = frame
@@ -52,7 +52,7 @@ local function showESPNotification(enabled, duration, customText, bgColor)
     local progressBar = Instance.new("Frame")
     progressBar.Size = UDim2.new(1, 0, 1, 0)
     progressBar.Position = UDim2.new(0, 0, 0, 0)
-    progressBar.BackgroundColor3 = Color3.fromRGB(0, 140, 128) -- морской цвет
+    progressBar.BackgroundColor3 = Color3.fromRGB(64, 192, 192) -- светлее, чем (0,128,128)
     progressBar.BorderSizePixel = 0
     progressBar.Parent = progressBarBG
 
@@ -60,18 +60,15 @@ local function showESPNotification(enabled, duration, customText, bgColor)
     progressCorner.CornerRadius = UDim.new(0, 2)
     progressCorner.Parent = progressBar
 
-    -- Эмоджи крестик (если false)
-    local emojiIcon = Instance.new("TextLabel")
-    emojiIcon.Size = UDim2.new(0, 24, 0, 24)
-    emojiIcon.Position = UDim2.new(0, 10, 0.5, -12)
-    emojiIcon.BackgroundTransparency = 1
-    emojiIcon.Text = enabled and "" or "❌"
-    emojiIcon.TextColor3 = Color3.fromRGB(255, 255, 255)
-    emojiIcon.TextScaled = true
-    emojiIcon.Font = Enum.Font.GothamBold
-    emojiIcon.Parent = frame
+    -- Иконка - круглая галочка или крестик
+    local icon = Instance.new("ImageLabel")
+    icon.Size = UDim2.new(0, 24, 0, 24)
+    icon.Position = UDim2.new(0, 10, 0.5, -12)
+    icon.BackgroundTransparency = 1
+    icon.Image = enabled and "rbxassetid://11238036790" or "rbxassetid://11238036799"
+    icon.Parent = frame
 
-    -- Текст уведомления (справа от эмоджи)
+    -- Текст уведомления
     local label = Instance.new("TextLabel")
     label.Size = UDim2.new(1, -44, 1, 0)
     label.Position = UDim2.new(0, 40, 0, 0)
@@ -84,7 +81,7 @@ local function showESPNotification(enabled, duration, customText, bgColor)
     label.TextXAlignment = Enum.TextXAlignment.Left
     label.Parent = frame
 
-    -- Анимация полоски
+    -- Анимация полоски сверху
     local progressTween = TweenService:Create(
         progressBar,
         TweenInfo.new(duration, Enum.EasingStyle.Linear),
@@ -107,6 +104,7 @@ local function showESPNotification(enabled, duration, customText, bgColor)
         end
     end)
 end
+
 
 
 
