@@ -70,3 +70,6 @@ local function showESPNotification(enabled, duration, customText, bgColor)
         end
     end)
 end
+
+
+showESPNotification(true, 3, "Test", 0, 128, 128)
