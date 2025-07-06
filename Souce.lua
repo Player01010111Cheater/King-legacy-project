@@ -1,112 +1,48 @@
-local TweenService = game:GetService("TweenService")
+-- NIGHT MODE + SNOW EFFECT
 
-local function showESPNotification(enabled, duration, customText, bgColor)
-    duration = duration or 3
+local Lighting = game:GetService("Lighting")
 
-    local player = game.Players.LocalPlayer
-    local screenGuiName = "ESPNotification"
+-- ТЁМНОЕ ОСВЕЩЕНИЕ
+Lighting.Brightness = 1
+Lighting.ClockTime = 0 -- Полночь
+Lighting.FogEnd = 500
+Lighting.FogColor = Color3.fromRGB(20, 20, 35)
+Lighting.Ambient = Color3.fromRGB(30, 30, 60)
+Lighting.OutdoorAmbient = Color3.fromRGB(25, 25, 40)
+Lighting.EnvironmentDiffuseScale = 0.5
+Lighting.EnvironmentSpecularScale = 0.5
 
-    -- Удаляем старое уведомление
-    local existing = player:WaitForChild("PlayerGui"):FindFirstChild(screenGuiName)
-    if existing then
-        existing:Destroy()
-    end
+-- КАСТОМНОЕ НЕБО
+local sky = Instance.new("Sky")
+sky.SkyboxBk = "rbxassetid://159454299" -- Можно заменить на кастом
+sky.SkyboxDn = "rbxassetid://159454296"
+sky.SkyboxFt = "rbxassetid://159454293"
+sky.SkyboxLf = "rbxassetid://159454286"
+sky.SkyboxRt = "rbxassetid://159454300"
+sky.SkyboxUp = "rbxassetid://159454288"
+sky.MoonAngularSize = 11
+sky.StarCount = 3000
+sky.SunAngularSize = 0
+sky.Parent = Lighting
 
-    local screenSize = workspace.CurrentCamera.ViewportSize
-    local isMobile = screenSize.X < 700
+-- СНЕГ (создаёт падающие снежинки)
+local snowPart = Instance.new("Part")
+snowPart.Size = Vector3.new(1000, 1, 1000)
+snowPart.Anchored = true
+snowPart.Position = Vector3.new(0, 100, 0)
+snowPart.Transparency = 1
+snowPart.CanCollide = false
+snowPart.Name = "SnowEmitter"
+snowPart.Parent = workspace
 
-    local notifWidth = isMobile and 180 or 220
-    local notifHeight = isMobile and 40 or 50
-    local notifOffset = isMobile and -190 or -240
-
-    -- GUI
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = screenGuiName
-    screenGui.ResetOnSpawn = false
-    screenGui.IgnoreGuiInset = true
-    screenGui.Parent = player:WaitForChild("PlayerGui")
-
-    -- Фрейм уведомления
-    local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0, notifWidth, 0, notifHeight)
-    frame.Position = UDim2.new(1, notifOffset, 0.05, 0)
-    frame.BackgroundColor3 = bgColor or Color3.fromRGB(30, 30, 30)
-    frame.BackgroundTransparency = 0.3
-    frame.BorderSizePixel = 0
-    frame.AnchorPoint = Vector2.new(0, 0)
-    frame.Parent = screenGui
-
-    -- Скругление
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 8)
-    corner.Parent = frame
-
-    -- Прогресс-бар сверху
-    local progressBarBG = Instance.new("Frame")
-    progressBarBG.Size = UDim2.new(1, 0, 0, 4)
-    progressBarBG.Position = UDim2.new(0, 0, 0, 0)
-    progressBarBG.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-    progressBarBG.BorderSizePixel = 0
-    progressBarBG.Parent = frame
-
-    local progressBar = Instance.new("Frame")
-    progressBar.Size = UDim2.new(1, 0, 1, 0)
-    progressBar.Position = UDim2.new(0, 0, 0, 0)
-    progressBar.BackgroundColor3 = Color3.fromRGB(64, 192, 192) -- светлее, чем (0,128,128)
-    progressBar.BorderSizePixel = 0
-    progressBar.Parent = progressBarBG
-
-    local progressCorner = Instance.new("UICorner")
-    progressCorner.CornerRadius = UDim.new(0, 2)
-    progressCorner.Parent = progressBar
-
-    -- Иконка - круглая галочка или крестик
-    local icon = Instance.new("ImageLabel")
-    icon.Size = UDim2.new(0, 24, 0, 24)
-    icon.Position = UDim2.new(0, 10, 0.5, -12)
-    icon.BackgroundTransparency = 1
-    icon.Image = enabled and "rbxassetid://11238036790" or "rbxassetid://11238036799"
-    icon.Parent = frame
-
-    -- Текст уведомления
-    local label = Instance.new("TextLabel")
-    label.Size = UDim2.new(1, -44, 1, 0)
-    label.Position = UDim2.new(0, 40, 0, 0)
-    label.BackgroundTransparency = 1
-    label.Text = customText or (enabled and "AutoESP Enabled" or "AutoESP Disabled")
-    label.TextColor3 = Color3.new(1, 1, 1)
-    label.TextScaled = true
-    label.Font = Enum.Font.GothamSemibold
-    label.ClipsDescendants = true
-    label.TextXAlignment = Enum.TextXAlignment.Left
-    label.Parent = frame
-
-    -- Анимация полоски сверху
-    local progressTween = TweenService:Create(
-        progressBar,
-        TweenInfo.new(duration, Enum.EasingStyle.Linear),
-        { Size = UDim2.new(0, 0, 1, 0) }
-    )
-    progressTween:Play()
-
-    -- Уезд уведомления вправо и удаление
-    task.delay(duration, function()
-        if frame and frame.Parent then
-            local tweenInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut)
-            local tween = TweenService:Create(
-                frame,
-                tweenInfo,
-                { Position = UDim2.new(1, 20, frame.Position.Y.Scale, frame.Position.Y.Offset) }
-            )
-            tween:Play()
-            tween.Completed:Wait()
-            screenGui:Destroy()
-        end
-    end)
-end
-
-
-
-
-
-showESPNotification(true, 3, "Test", Color3.fromRGB(0, 128, 128))
+local emitter = Instance.new("ParticleEmitter", snowPart)
+emitter.Texture = "rbxassetid://6012524446" -- Текстура снежинки
+emitter.Rate = 300
+emitter.Lifetime = NumberRange.new(3, 5)
+emitter.Speed = NumberRange.new(1, 3)
+emitter.Size = NumberSequence.new({NumberSequenceKeypoint.new(0, 0.5), NumberSequenceKeypoint.new(1, 0.5)})
+emitter.Transparency = NumberSequence.new(0.3)
+emitter.VelocitySpread = 180
+emitter.Rotation = NumberRange.new(0, 360)
+emitter.RotSpeed = NumberRange.new(-90, 90)
+emitter.LightInfluence = 0
