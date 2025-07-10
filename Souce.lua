@@ -57,7 +57,7 @@ local tab = Window:Tab({Title = "test", Icon = "gem"})
 
 local autosellpets_rarity = {}
 local autosellpets_interval = 60
-local petsell_event = gamevent_global.SellPet_RE -- :FireServer(workspace.LocalPlayer.Ostrich)
+local petsell_event = gamevent_global.SellPet_RE
 local pet_filter = {}
 local autosellpets_persale = 2 -- Кол-во продажи за раз (по умолчанию 2)
 
@@ -66,47 +66,36 @@ local slider_interval = nil
 local dropdown_petfilter = nil
 local slider_persale = nil
 
-local function get_pets(pet_lst)
+-- Функция получения списка питомцев по выбранным редкостям
+local function get_pets(rarity_list)
     local result = {}
-    for _, category in ipairs(pet_lst) do
-        local pets_in_category = petslist[category]
-        if pets_in_category then
-            for pet_name, _ in pairs(pets_in_category) do
-                print("Pet:", pet_name)
+    for _, rarity in ipairs(rarity_list) do
+        local pets_in_rarity = petslist[rarity]
+        if pets_in_rarity then
+            for pet_name, _ in pairs(pets_in_rarity) do
                 table.insert(result, pet_name)
             end
         else
-            warn("Category not found:", category)
+            warn("Category not found:", rarity)
         end
     end
-    -- print список как строку (через запятую)
-    print(table.concat(result, ", "))
     return result
 end
 
+local function clear_custom_ui()
+    if dropdown_rarity then dropdown_rarity:Destroy() dropdown_rarity = nil end
+    if dropdown_petfilter then dropdown_petfilter:Destroy() dropdown_petfilter = nil end
+    if slider_interval then slider_interval:Destroy() slider_interval = nil end
+    if slider_persale then slider_persale:Destroy() slider_persale = nil end
+    pet_filter = {}
+end
 
 local filter_dropdown = tab:Dropdown({
     Title = "Filter",
     Values = {"Auto", "Custom"},
     Value = "Auto",
     Callback = function(option)
-        -- Сначала уничтожаем все элементы кастомизации, если они есть
-        if dropdown_rarity then
-            dropdown_rarity:Destroy()
-            dropdown_rarity = nil
-        end
-        if slider_interval then
-            slider_interval:Destroy()
-            slider_interval = nil
-        end
-        if dropdown_petfilter then
-            dropdown_petfilter:Destroy()
-            dropdown_petfilter = nil
-        end
-        if slider_persale then
-            slider_persale:Destroy()
-            slider_persale = nil
-        end
+        clear_custom_ui()
 
         if option == "Auto" then
             -- Автоматические настройки
@@ -116,26 +105,35 @@ local filter_dropdown = tab:Dropdown({
             autosellpets_persale = 2
 
         elseif option == "Custom" then
+            -- Инициализация редкостей
+            autosellpets_rarity = {"Common", "Uncommon"}
 
-            -- Дропдаун редкостей
             dropdown_rarity = tab:Dropdown({
                 Title = "Rarity Filter",
                 Values = {"Common", "Uncommon", "Rare", "Legendary", "Mythical", "Divine"},
                 Value = autosellpets_rarity,
                 Multi = true,
                 AllowNone = true,
-                Callback = function(options)
-                    autosellpets_rarity = options
+                Callback = function(selected_rarities)
+                    autosellpets_rarity = selected_rarities
+
+                    -- Удаляем старый dropdown питомцев если есть
+                    if dropdown_petfilter then
+                        dropdown_petfilter:Destroy()
+                        dropdown_petfilter = nil
+                        pet_filter = {}
+                    end
+
                     local pets_for_filter = get_pets(autosellpets_rarity)
                     if #pets_for_filter > 0 then
                         dropdown_petfilter = tab:Dropdown({
                             Title = "Pet Filter",
                             Values = pets_for_filter,
-                            Value = {},
+                            Value = pet_filter,
                             Multi = true,
                             AllowNone = true,
-                            Callback = function(pets)
-                                pet_filter = pets
+                            Callback = function(selected_pets)
+                                pet_filter = selected_pets
                             end
                         })
                     else
@@ -143,6 +141,23 @@ local filter_dropdown = tab:Dropdown({
                     end
                 end
             })
+
+            -- Создаем dropdown питомцев по умолчанию сразу
+            local pets_for_filter = get_pets(autosellpets_rarity)
+            if #pets_for_filter > 0 then
+                dropdown_petfilter = tab:Dropdown({
+                    Title = "Pet Filter",
+                    Values = pets_for_filter,
+                    Value = pet_filter,
+                    Multi = true,
+                    AllowNone = true,
+                    Callback = function(selected_pets)
+                        pet_filter = selected_pets
+                    end
+                })
+            else
+                pet_filter = {}
+            end
 
             -- Слайдер интервала продажи
             slider_interval = tab:Slider({
