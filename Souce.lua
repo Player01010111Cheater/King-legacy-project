@@ -70,13 +70,20 @@ local function get_pets(pet_lst)
     local result = {}
     for _, category in ipairs(pet_lst) do
         local pets_in_category = petslist[category]
-        for _, pet_name in ipairs(pets_in_category) do
-            table.insert(result, pet_name)
+        if pets_in_category then
+            for pet_name, _ in pairs(pets_in_category) do
+                print("Pet:", pet_name)
+                table.insert(result, pet_name)
+            end
+        else
+            warn("Category not found:", category)
         end
     end
-    print(result)
+    -- print список как строку (через запятую)
+    print(table.concat(result, ", "))
     return result
 end
+
 
 local filter_dropdown = tab:Dropdown({
     Title = "Filter",
@@ -169,4 +176,3 @@ local filter_dropdown = tab:Dropdown({
         end
     end
 })
-
