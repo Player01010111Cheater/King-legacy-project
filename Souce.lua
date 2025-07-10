@@ -70,12 +70,11 @@ local function get_pets(pet_lst)
     local result = {}
     for _, category in ipairs(pet_lst) do
         local pets_in_category = petslist[category]
-        if pets_in_category then
-            for _, pet_name in ipairs(pets_in_category) do
-                table.insert(result, pet_name)
-            end
+        for _, pet_name in ipairs(pets_in_category) do
+            table.insert(result, pet_name)
         end
     end
+    print(result)
     return result
 end
 
@@ -120,11 +119,6 @@ local filter_dropdown = tab:Dropdown({
                 AllowNone = true,
                 Callback = function(options)
                     autosellpets_rarity = options
-                    -- Обновляем фильтр питомцев
-                    if dropdown_petfilter then
-                        dropdown_petfilter:Destroy()
-                        dropdown_petfilter = nil
-                    end
                     local pets_for_filter = get_pets(autosellpets_rarity)
                     if #pets_for_filter > 0 then
                         dropdown_petfilter = tab:Dropdown({
@@ -151,7 +145,7 @@ local filter_dropdown = tab:Dropdown({
                 Value = {
                     Min = 1,
                     Max = 120,
-                    Default = 60,
+                    Default = autosellpets_interval,
                 },
                 Callback = function(value)
                     autosellpets_interval = value
@@ -175,3 +169,4 @@ local filter_dropdown = tab:Dropdown({
         end
     end
 })
+
