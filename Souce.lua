@@ -103,6 +103,7 @@ local function autosellpets()
                 if count >= tonumber(autosellpets_persale) then
                     return "Done"
                 end
+                task.wait(0.3)
             end
         end
     end
@@ -155,10 +156,9 @@ local filter_dropdown = tab:Dropdown({
                 Callback = function(selected_rarities)
                     autosellpets_rarity = selected_rarities
 
-
                     local pets_for_filter = get_pets(autosellpets_rarity)
                     if dropdown_petfilter then
-                        dropdown_petfilter:Refresh({})
+                        dropdown_petfilter:Refresh({""})
                         task.wait(0.1)
                         dropdown_petfilter:Refresh(pets_for_filter)
                     end
