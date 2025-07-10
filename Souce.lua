@@ -100,13 +100,22 @@ local function autosellpets()
                 items.Parent = workspace[player.Name]
                 petsell_event:FireServer(items)
                 count = count + 1
-                if count >= autosellpets_persale then
+                if count >= tonumber(autosellpets_persale) then
                     return "Done"
                 end
             end
         end
     end
 end
+local start_autosellpets = tab:Toggle({
+    Title = "AutoSell Pets",
+    Callback = function (state)
+        sell_statuspets = state
+        if state == true then
+            autosellpets()
+        end        
+    end
+})
 local filter_dropdown = tab:Dropdown({
     Title = "Filter",
     Values = {"Auto", "Custom"},
@@ -191,12 +200,4 @@ local filter_dropdown = tab:Dropdown({
         end
     end
 })
-local start_autosellpets = tab:Toggle({
-    Title = "AutoSell Pets",
-    Callback = function (state)
-        sell_statuspets = state
-        if state == true then
-            autosellpets()
-        end        
-    end
-})
+
