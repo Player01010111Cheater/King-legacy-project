@@ -96,11 +96,11 @@ local function autosellpets()
     for _, v in pairs(pets) do
         for _, items in pairs(player_backpack:GetChildren()) do
             if string.find(items.Name, v) then
-                if not sell_statuspets == true then return "ada" end
+                if not sell_statuspets then return "ada" end
                 items.Parent = workspace[player.Name]
                 petsell_event:FireServer(items.Name)
                 count = count + 1
-                if count == autosellpets_persale then
+                if count >= autosellpets_persale then
                     return "Done"
                 end
             end
