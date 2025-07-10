@@ -56,6 +56,7 @@ local Window = WindUI:CreateWindow({
 local tab = Window:Tab({Title = "test", Icon = "gem"})
 
 local autosellpets_rarity = {}
+local sell_statuspets = false
 local autosellpets_interval = 60
 local petsell_event = gamevent_global.SellPet_RE
 local pet_filter = {}
@@ -89,7 +90,23 @@ local function clear_custom_ui()
     if slider_persale then slider_persale:Destroy() slider_persale = nil end
     pet_filter = {}
 end
-
+local function autosellpets()
+    local pets = pet_filter or get_pets(autosellpets_rarity)
+    local count = 0
+    for _, v in pairs(pets) do
+        for _, items in pairs(player_backpack:GetChildren()) do
+            if string.find(items.Name, v) then
+                if not sell_statuspets == true then return "ada" end
+                items.Parent = workspace[player.Name]
+                petsell_event:FireServer(items.Name)
+                count = count + 1
+                if count == autosellpets_persale then
+                    return "Done"
+                end
+            end
+        end
+    end
+end
 local filter_dropdown = tab:Dropdown({
     Title = "Filter",
     Values = {"Auto", "Custom"},
@@ -172,5 +189,14 @@ local filter_dropdown = tab:Dropdown({
                 end
             })
         end
+    end
+})
+local start_autosellpets = tab:Toggle({
+    Title = "AutoSell Pets",
+    Callback = function (state)
+        sell_statuspets = state
+        if state == true then
+            autosellpets()
+        end        
     end
 })
