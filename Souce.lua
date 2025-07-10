@@ -117,27 +117,10 @@ local filter_dropdown = tab:Dropdown({
                 Callback = function(selected_rarities)
                     autosellpets_rarity = selected_rarities
 
-                    -- Удаляем старый dropdown питомцев если есть
-                    if dropdown_petfilter then
-                        dropdown_petfilter:Destroy()
-                        dropdown_petfilter = nil
-                        pet_filter = {}
-                    end
 
                     local pets_for_filter = get_pets(autosellpets_rarity)
-                    if #pets_for_filter > 0 then
-                        dropdown_petfilter = tab:Dropdown({
-                            Title = "Pet Filter",
-                            Values = pets_for_filter,
-                            Value = pet_filter,
-                            Multi = true,
-                            AllowNone = true,
-                            Callback = function(selected_pets)
-                                pet_filter = selected_pets
-                            end
-                        })
-                    else
-                        pet_filter = {}
+                    if dropdown_petfilter then
+                        dropdown_petfilter:Refresh(pets_for_filter)
                     end
                 end
             })
