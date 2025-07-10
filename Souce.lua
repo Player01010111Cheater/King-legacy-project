@@ -107,12 +107,24 @@ local function autosellpets()
         end
     end
 end
+local thread_autosellpets = nil
 local start_autosellpets = tab:Toggle({
     Title = "AutoSell Pets",
     Callback = function (state)
         sell_statuspets = state
-        if state == true then
-            autosellpets()
+        if sell_statuspets == true then
+            if not thread_autosellpets or coroutine.status(thread_autosellpets) == "dead" then
+                thread_autosellpets = coroutine.create(function()
+                    while sell_statuspets do
+                        autosellpets()
+                        task.wait(autosellpets_interval)
+                    end
+                end)
+                coroutine.resume(thread_autosellpets)
+            end
+        else
+            sell_statuspets = false
+            thread_autosellpets = false
         end        
     end
 })
@@ -146,6 +158,8 @@ local filter_dropdown = tab:Dropdown({
 
                     local pets_for_filter = get_pets(autosellpets_rarity)
                     if dropdown_petfilter then
+                        dropdown_petfilter:Refresh({})
+                        task.wait(0.1)
                         dropdown_petfilter:Refresh(pets_for_filter)
                     end
                 end
@@ -200,4 +214,3 @@ local filter_dropdown = tab:Dropdown({
         end
     end
 })
-
