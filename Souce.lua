@@ -1,6 +1,13 @@
 local WindUI = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/latest/download/main.lua"))()
 local petslist = loadstring(game:HttpGet("https://raw.githubusercontent.com/Player01010111Cheater/CrystHub/refs/heads/main/CrystalHub_GaG-petlist.lua"))()
+local players = game:GetService("Players")
+local replicated_st = game:GetService("ReplicatedStorage")
 local player = game.Players.LocalPlayer
+local player_gui = player:WaitForChild("PlayerGui")
+local StarterGui = game:GetService("StarterGui")
+local player_character = player.Character
+local player_backpack = player.Backpack
+local gamevent_global = replicated_st.GameEvents
 
 -- theme
 WindUI:AddTheme({
@@ -145,26 +152,59 @@ local Window = WindUI:CreateWindow({
     },
 
 })
-
-
 local tab = Window:Tab({Title = "test", Icon = "gem"})
+
 local autosellpets_rarity = {}
 local autosellpets_interval = 60
+local petsell_event = gamevent_global.SellPet_RE -- :FireServer(workspace.LocalPlayer.Ostrich)
+local pet_filter = {}
+local autosellpets_persale = 2  -- Кол-во продажи за раз (по умолчанию 2)
+
 local dropdown_rarity = nil
 local slider_interval = nil
+local dropdown_petfilter = nil
+local slider_persale = nil
+
+local function get_pets(pet_lst)
+    local result = {}
+    for _, category in ipairs(pet_lst) do
+        local pets_in_category = petslist[category]
+        if pets_in_category then
+            for _, pet_name in ipairs(pets_in_category) do
+                table.insert(result, pet_name)
+            end
+        end
+    end
+    return result
+end
+
 local d = tab:Dropdown({
     Title = "Filter",
     Values = {"Auto", "Custom"},
     Value = "Auto",
     Callback = function (option)
+            if dropdown_rarity then
+                dropdown_rarity:Destroy()
+            dropdown_rarity = nil
+        end
+        if slider_interval then
+                slider_interval:Destroy()
+                slider_interval = nil
+        end
+        if dropdown_petfilter then
+                dropdown_petfilter:Destroy()
+                dropdown_petfilter = nil
+        end
+        if slider_persale then
+            slider_persale:Destroy()
+            slider_persale = nil
+        end
         if option == "Auto" then
             autosellpets_rarity = {"Common", "Uncommon"}
             autosellpets_interval = 60
-            if dropdown_rarity then
-                dropdown_rarity:Destroy()
-            elseif slider_interval then
-                slider_interval:Destroy()
-            end
+            pet_filter = {}  -- очищаем фильтр по питомцам
+            autosellpets_persale = 2  -- сброс количества продажи
+
         elseif option == "Custom" then
             dropdown_rarity = tab:Dropdown({
                 Title = "Rarity Filter",
@@ -173,9 +213,49 @@ local d = tab:Dropdown({
                 Multi = true,
                 AllowNone = true,
                 Callback = function (options)
-                    autosellpets_rarity = options                
+                    autosellpets_rarity = options
+                end
+            })
+
+            slider_interval = tab:Slider({
+                Title = "Sell Interval",
+                Desc = "The recommended interval is 60s",
+                Step = 1,
+                Value = {
+                    Min = 1,
+                    Max = 120,
+                    Default = 60,
+                },
+                Callback = function (value)
+                    autosellpets_interval = value
+                end
+            })
+
+            dropdown_petfilter = tab:Dropdown({
+                Title = "Pet Filter",
+                Values = get_pets(autosellpets_rarity),  -- список питомцев по редкости
+                Value = {},
+                Multi = true,
+                AllowNone = true,
+                Callback = function (pets)
+                    pet_filter = pets
+                end
+            })
+
+            slider_persale = tab:Slider({
+                Title = "Amount per sale",
+                Desc = "Choose how many pets to sell at once (1-6)",
+                Step = 1,
+                Value = {
+                    Min = 1,
+                    Max = 6,
+                    Default = autosellpets_persale,
+                },
+                Callback = function (value)
+                    autosellpets_persale = value
                 end
             })
         end
     end
 })
+
