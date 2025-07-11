@@ -1,10 +1,10 @@
-local _oysevd=function(_euu,_brp,_chd,_ycg)
-local c="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
-local r=""
-for i=1,#_euu do
-r=r..c:sub((_euu[i]-(_brp-_chd)-i-1)%_nil+1,(_euu[i]-(_brp-_chd)-i-1)%_nil+1)
+local _arrvny=function(_ozi,_abj,_lxn,_dwr)
+local c={'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','0','1','2','3','4','5','6','7','8','9',' ','!','\"','#','$','%','&','\'','(',')','*','+',',','-','.','/',':',';','<','=','>','?','@','[','\\',']','^','_','`','{','|','}','~'}
+local r={}
+for i=1,#_ozi do
+r[i]=c[(_ozi[i]-(_abj-_lxn)-i-1)%_dwr+1]
 end
-return r
+return table.concat(r)
 end
-return loadstring("    jjrlpx layqxw = _mrwf({40,20,37,35,45,44,4,88,29,48,50,30,33,35,1},35,19,95)\
-    print(layqxw)")()
+return loadstring("    pfukuv hsmklb = _yfrv({95,11,23,5,21,28,79,68,11,26,32,20,20,24,76},106,15,95)\
+    print(hsmklb)")()
